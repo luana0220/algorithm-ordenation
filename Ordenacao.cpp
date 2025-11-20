@@ -11,13 +11,13 @@ void Ordenacao::troca(int& a, int& b, Resultados& resultados)
 //metodos privados quick Sort Lomuto
 int Ordenacao::particionaLomuto(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
 {
-   int pivo = vec[fim];
-   int i = inicio - 1;
+   int pivo = vec[fim]; //pivô é o último elemento
+   int i = inicio - 1; 
    for(int j = inicio; j < fim; j++)
 
    {
        resultados.comparacoes++;
-       if(vec[j] <= pivo)
+       if(vec[j] <= pivo) //troca se o elemento for menor ou igual ao pivô
        {
            i++;
            troca(vec[i], vec[j], resultados);
@@ -49,7 +49,7 @@ void Ordenacao::selectionSort(std::vector<int> &vec, Resultados& resultados)
     for (int i = 0; i < tam - 1; i++)
     {
         int indiceMenor = i;
-        for (int j = i + 1; j < tam; j++)
+        for (int j = i + 1; j < tam; j++) //encontra o menor elemento no vetor não ordenado 
         {
             resultados.comparacoes++;
             if (vec[j] < vec[indiceMenor])
@@ -57,7 +57,7 @@ void Ordenacao::selectionSort(std::vector<int> &vec, Resultados& resultados)
                 indiceMenor = j;
             }
         }
-        if (indiceMenor != i)
+        if (indiceMenor != i) //troca o menor elemento encontrado com o primeiro elemento do vetor
         {
             troca(vec[i], vec[indiceMenor], resultados);
         }
@@ -67,6 +67,7 @@ void Ordenacao::selectionSort(std::vector<int> &vec, Resultados& resultados)
 void Ordenacao::bubbleSort(std::vector<int> &vec, Resultados& resultados)
 {
     int tam = vec.size();
+    //percorre todo o vetor
     for (int i = 0; i < tam - 1; i++)
     {
         bool trocou = false;
@@ -79,7 +80,7 @@ void Ordenacao::bubbleSort(std::vector<int> &vec, Resultados& resultados)
                 trocou = true;
             }
         }
-        if (!trocou)
+        if (!trocou) //se não houve troca, o vetor já está ordenado
             break;
     }
 }
@@ -112,4 +113,45 @@ long long Ordenacao::medirTempo(std::function<void(std::vector<int>&, Resultados
     auto duracao = std::chrono::duration_cast<std::chrono::microseconds>(fim - inicio).count();
     resultados.tempo = duracao;
     return duracao;
+}
+
+//quick Sort Hoare - métodos privados
+int Ordenacao::particionaHoare(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
+{
+    int pivo = vec[inicio];
+    int i = inicio - 1;
+    int j = fim + 1;
+    while (true)
+    {
+        do
+        {
+            i++;
+            resultados.comparacoes++;
+        } while (vec[i] < pivo);
+        do
+        {
+            j--;
+            resultados.comparacoes++;
+        } while (vec[j] > pivo);
+        if (i >= j)
+            return j;
+        troca(vec[i], vec[j], resultados);
+    }
+}
+
+void Ordenacao::quickSortHoareRec(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
+{
+    if (inicio < fim) // condição de parada, pois o índice inicial deve ser menor que o final
+    {
+        int pivoIndice = particionaHoare(vec, inicio, fim, resultados);// retorna o indice do pivô
+        // partição do vetor a partir do índice do pivô
+        quickSortHoareRec(vec, inicio, pivoIndice, resultados);
+        quickSortHoareRec(vec, pivoIndice + 1, fim, resultados);
+    }
+}
+
+// método público quick Sort Hoare
+void Ordenacao::quickSortHoare(std::vector<int>& vec, Resultados& resultados)
+{
+    quickSortHoareRec(vec, 0, vec.size() - 1, resultados);
 }
