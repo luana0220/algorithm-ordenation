@@ -1,49 +1,53 @@
 #include "Ordenacao.hpp"
 
-void Ordenacao::troca(int& a, int& b, Resultados& resultados)
+long long Ordenacao::trocas = 0;
+long Ordenacao::comparacoes = 0;
+long long Ordenacao::tempoExecucao = 0;
+
+void Ordenacao::troca(int& a, int& b)
 {
     int temp = a;
     a = b;
     b = temp;
-    resultados.trocas++;
+    trocas++;
 }
 
 //metodos privados quick Sort Lomuto
-int Ordenacao::particionaLomuto(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
+int Ordenacao::particionaLomuto(std::vector<int>& vec, int inicio, int fim)
 {
    int pivo = vec[fim]; //pivô é o último elemento
    int i = inicio - 1; 
    for(int j = inicio; j < fim; j++)
 
    {
-       resultados.comparacoes++;
+       comparacoes++;
        if(vec[j] <= pivo) //troca se o elemento for menor ou igual ao pivô
        {
            i++;
-           troca(vec[i], vec[j], resultados);
+           troca(vec[i], vec[j]);
        }
    }
-   troca(vec[i + 1], vec[fim], resultados);
+   troca(vec[i + 1], vec[fim]);
    return i + 1;
 }
 
-void Ordenacao::quickSortLomutoRec(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
+void Ordenacao::quickSortLomutoRec(std::vector<int>& vec, int inicio, int fim)
 {
    if(inicio < fim)
    {
-       int pivoIndice = particionaLomuto(vec, inicio, fim, resultados);
-       quickSortLomutoRec(vec, inicio, pivoIndice - 1, resultados);
-       quickSortLomutoRec(vec, pivoIndice + 1, fim, resultados);
+       int pivoIndice = particionaLomuto(vec, inicio, fim);
+       quickSortLomutoRec(vec, inicio, pivoIndice - 1);
+       quickSortLomutoRec(vec, pivoIndice + 1, fim);
    }
 }
 
 // metodo public quick Sort Lomuto
-void Ordenacao::quickSortLomuto(std::vector<int>& vec, Resultados& resultados)
+void Ordenacao::quickSortLomuto(std::vector<int>& vec)
 {
-   quickSortLomutoRec(vec, 0, vec.size() - 1, resultados);
+   quickSortLomutoRec(vec, 0, vec.size() - 1);
 }
 
-void Ordenacao::selectionSort(std::vector<int> &vec, Resultados& resultados)
+void Ordenacao::selectionSort(std::vector<int> &vec)
 {
     int tam = vec.size();
     for (int i = 0; i < tam - 1; i++)
@@ -51,7 +55,7 @@ void Ordenacao::selectionSort(std::vector<int> &vec, Resultados& resultados)
         int indiceMenor = i;
         for (int j = i + 1; j < tam; j++) //encontra o menor elemento no vetor não ordenado 
         {
-            resultados.comparacoes++;
+            comparacoes++;
             if (vec[j] < vec[indiceMenor])
             {
                 indiceMenor = j;
@@ -59,12 +63,12 @@ void Ordenacao::selectionSort(std::vector<int> &vec, Resultados& resultados)
         }
         if (indiceMenor != i) //troca o menor elemento encontrado com o primeiro elemento do vetor
         {
-            troca(vec[i], vec[indiceMenor], resultados);
+            troca(vec[i], vec[indiceMenor]);
         }
     }
 }
 
-void Ordenacao::bubbleSort(std::vector<int> &vec, Resultados& resultados)
+void Ordenacao::bubbleSort(std::vector<int> &vec)
 {
     int tam = vec.size();
     //percorre todo o vetor
@@ -73,10 +77,10 @@ void Ordenacao::bubbleSort(std::vector<int> &vec, Resultados& resultados)
         bool trocou = false;
         for (int j = 0; j < tam - i - 1; j++)
         {
-            resultados.comparacoes++;
+            comparacoes++;
             if (vec[j] > vec[j + 1])
             {
-                troca(vec[j], vec[j + 1], resultados);
+                troca(vec[j], vec[j + 1]);
                 trocou = true;
             }
         }
@@ -85,38 +89,38 @@ void Ordenacao::bubbleSort(std::vector<int> &vec, Resultados& resultados)
     }
 }
 
-void Ordenacao::insertionSort(std::vector<int> &vec, Resultados& resultados)
+void Ordenacao::insertionSort(std::vector<int> &vec)
 {
     int tam = vec.size();
     for (int i = 1; i < tam; i++)
     {
         int chave = vec[i];
         int j = i - 1;
-        resultados.comparacoes += 2; // +=2 porque são feitas duas comparações no while
+        comparacoes += 2;
         while (j >= 0 && vec[j] > chave)
         {
             vec[j + 1] = vec[j];
-            resultados.trocas++; // na vdd são movimentações, mas para simplificar, contamos como trocas
+            trocas++;
             j--;
         }
+        
         vec[j + 1] = chave;
-        resultados.trocas++; //na vdd é uma movimentação, mas para simplificar, contamos como troca
+        trocas++;
     }
 }
 
 //função para medir tempo de execução
-long long Ordenacao::medirTempo(std::function<void(std::vector<int>&, Resultados&)> funcaoOrdenacao, std::vector<int>& vec, Resultados& resultados)
+long long Ordenacao::medirTempo(std::function<void(std::vector<int>&)> funcaoOrdenacao, std::vector<int>& vec)
 {
     auto inicio = std::chrono::high_resolution_clock::now();
-    funcaoOrdenacao(vec, resultados);
+    funcaoOrdenacao(vec);
     auto fim = std::chrono::high_resolution_clock::now();
-    auto duracao = std::chrono::duration_cast<std::chrono::microseconds>(fim - inicio).count();
-    resultados.tempo = duracao;
-    return duracao;
+    tempoExecucao = std::chrono::duration_cast<std::chrono::microseconds>(fim - inicio).count();
+    return tempoExecucao;
 }
 
 //quick Sort Hoare - métodos privados
-int Ordenacao::particionaHoare(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
+int Ordenacao::particionaHoare(std::vector<int>& vec, int inicio, int fim)
 {
     int pivo = vec[inicio];
     int i = inicio - 1;
@@ -126,32 +130,52 @@ int Ordenacao::particionaHoare(std::vector<int>& vec, int inicio, int fim, Resul
         do
         {
             i++;
-            resultados.comparacoes++;
+            comparacoes++;
         } while (vec[i] < pivo);
         do
         {
             j--;
-            resultados.comparacoes++;
+            comparacoes++; 
         } while (vec[j] > pivo);
         if (i >= j)
             return j;
-        troca(vec[i], vec[j], resultados);
+        troca(vec[i], vec[j]);
     }
 }
 
-void Ordenacao::quickSortHoareRec(std::vector<int>& vec, int inicio, int fim, Resultados& resultados)
+void Ordenacao::quickSortHoareRec(std::vector<int>& vec, int inicio, int fim)
 {
     if (inicio < fim) // condição de parada, pois o índice inicial deve ser menor que o final
     {
-        int pivoIndice = particionaHoare(vec, inicio, fim, resultados);// retorna o indice do pivô
+        int pivoIndice = particionaHoare(vec, inicio, fim);// retorna o indice do pivô
         // partição do vetor a partir do índice do pivô
-        quickSortHoareRec(vec, inicio, pivoIndice, resultados);
-        quickSortHoareRec(vec, pivoIndice + 1, fim, resultados);
+        quickSortHoareRec(vec, inicio, pivoIndice);
+        quickSortHoareRec(vec, pivoIndice + 1, fim);
     }
 }
 
 // método público quick Sort Hoare
-void Ordenacao::quickSortHoare(std::vector<int>& vec, Resultados& resultados)
+void Ordenacao::quickSortHoare(std::vector<int>& vec)
 {
-    quickSortHoareRec(vec, 0, vec.size() - 1, resultados);
+    quickSortHoareRec(vec, 0, vec.size() - 1);
+}
+
+long long Ordenacao::getTempo()
+{
+    return tempoExecucao;
+}
+
+long Ordenacao::getComparacoes()
+{
+    return comparacoes;
+}
+long long Ordenacao::getTrocas()
+{
+    return trocas;
+}
+
+void Ordenacao::zerarDados() {
+    trocas = 0;
+    comparacoes = 0;
+    tempoExecucao = 0;
 }

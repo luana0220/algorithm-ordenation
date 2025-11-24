@@ -1,10 +1,11 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 #include "Ordenacao.hpp"
-#include "Resultados.hpp" 
-#include "GeradorVetor.hpp" 
+#include "Gerenciador.hpp"
+#include "GeradorVetor.hpp"
 
-std::vector<std::vector<int>> iteracaoVetorAleatorio(int tam) {
+
+/*std::vector<std::vector<int>> iteracaoVetorAleatorio(int tam) {
     std::vector<std::vector<int>> vetoresAleatorios;
     for(int i = 0; i < 2; i++) {
         vetoresAleatorios.push_back(GeradorVetor::gerarVetorAleatorio(tam));
@@ -20,9 +21,10 @@ double rodar10vzs(std::vector<int> vetor, Resultados& r) {
         somaTempos += r.tempo;
     }
     return somaTempos / 10.0;
-}
+}*/
 
-int main() {
+int main()
+{
     /*
     std::vector<int> vec = {2, 1, 4, 3};
     Resultados resultados;
@@ -34,12 +36,12 @@ int main() {
     }
 
     std::vector<int> vecCrescente = GeradorVetor::gerarVetorCrescente(10);
-    std::cout << "\nVetor Crescente: "; 
+    std::cout << "\nVetor Crescente: ";
     for(int num : vecCrescente) {
         std::cout << num << " ";
     }
     std::vector<int> vecDecrescente = GeradorVetor::gerarVetorDecrescente(10);
-    std::cout << "\nVetor Decrescente: ";   
+    std::cout << "\nVetor Decrescente: ";
     for(int num : vecDecrescente) {
         std::cout << num << " ";
     }
@@ -53,14 +55,33 @@ int main() {
     for(int num : vecQuaseOrdenado) {
         std::cout << num << " ";
     }*/
-   double somaSelectionSort = 0.0;
-   std::vector<std::vector<int>> vetores = iteracaoVetorAleatorio(1000);
-   std::vector<Resultados> resultadosVetorAleatorio(2);
-   for(int i = 0; i < vetores.size(); i++) {
-       double mediaDeUmVetor = rodar10vzs(vetores[i], resultadosVetorAleatorio[i]);
-       somaSelectionSort += mediaDeUmVetor;
-   }
-   double mediaFinalSelectionSort = somaSelectionSort / vetores.size();
-   std::cout << "Media final do Selection Sort para vetores aleatorios de tamanho 10: " << mediaFinalSelectionSort << " microsegundos." << std::endl;
+    /*std::vector<std::vector<int>> vetores = Gerenciador::gerarVetorDeVetorerIguais(10, GeradorVetor::gerarVetorCrescente);
+    for(int i = 0; i < vetores.size(); i++) {
+        std::cout << "Vetor " << i + 1 << ": ";
+        for(int num : vetores[i]) {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    std::vector<std::vector<int>> vetorTeste = Gerenciador::gerarVetorDeVetores(10, GeradorVetor::gerarVetorAleatorio);
+    for(int i = 0; i < vetorTeste.size(); i++) {
+        std::cout << "Vetor " << i + 1 << ": ";
+        for(int num : vetorTeste[i]) {
+            std::cout << num << " ";
+        }
+        std::cout << std::endl;
+    }*/
+
+    std::vector<int> vt = {5,1,2,3,9,4};
+    Ordenacao::medirTempo(Ordenacao::bubbleSort, vt);
+    for(int num : vt) {
+        std::cout << num << " ";
+    }
+    std::cout << "Trocas: " << Ordenacao::getTrocas() << std::endl;
+    std::vector<int> vc = {1,2,3,4,5,6};
+    Ordenacao::medirTempo(Ordenacao::bubbleSort, vc);
+    std::cout << "Trocas: " << Ordenacao::getTrocas() << std::endl;
+    Gerenciador::executarTestes();
     return 0;
 }
