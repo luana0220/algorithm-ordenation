@@ -22,7 +22,10 @@ double rodar10vzs(std::vector<int> vetor, Resultados& r) {
     }
     return somaTempos / 10.0;
 }*/
-
+void printVector(const std::vector<int>& v) {
+    for (int x : v) std::cout << x << " ";
+    std::cout << "\n";
+}
 int main()
 {
     /*
@@ -73,7 +76,7 @@ int main()
         std::cout << std::endl;
     }
 
-    std::vector<int> vt = {5,1,2,3,9,4};
+    
     Ordenacao::medirTempo(Ordenacao::bubbleSort, vt);
     for(int num : vt) {
         std::cout << num << " ";
@@ -83,7 +86,17 @@ int main()
     Ordenacao::medirTempo(Ordenacao::bubbleSort, vc);
     std::cout << "Trocas: " << Ordenacao::getTrocas() << std::endl;
     Gerenciador::executarTestes();*/
-    Gerenciador ordenar;
-    ordenar.executarTestes();
+    std::vector<int> v = { 8, 3, 7, 4, 9, 2 }; // escolha qualquer um dos 3
+
+    std::cout << "Antes:  ";
+    printVector(v);
+
+    Ordenacao::mergeSort(v);
+
+    std::cout << "Depois: ";
+    printVector(v);
+
     return 0;
 }
+
+

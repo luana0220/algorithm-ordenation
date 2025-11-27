@@ -12,8 +12,11 @@ private:
     static void quickSortLomutoRec(std::vector<int> &vec, int inicio, int fim);
     static int particionaHoare(std::vector<int> &vec, int inicio, int fim);
     static void quickSortHoareRec(std::vector<int> &vec, int inicio, int fim);
-    // atributos
+    //método recursivo do mergesorte
+    static void mergeSortRec(std::vector<int>& vec, int esq, int dir);
+     static void merge(std::vector<int>& vec, int esq, int meio, int dir);
 public:
+// atributos
     static long long trocas;
     static long comparacoes;
     static long long tempoExecucao;
@@ -29,6 +32,7 @@ public:
     static long long getTempo();
     static long getComparacoes();
     static void zerarDados(); // para os valores de trocas, comparações e resultados não sobreporem a cada método e repetição
+    static void mergeSort(std::vector<int>& vec);
 };
 
 #endif

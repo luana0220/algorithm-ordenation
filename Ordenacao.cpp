@@ -120,7 +120,73 @@ void Ordenacao::insertionSort(std::vector<int> &vec)
         vec[j + 1] = chave;
     }
 }
+void Ordenacao::merge(std::vector<int>& vec, int esq, int meio, int dir) {
+    int tam1 = meio - esq + 1;
+    int tam2 = dir - meio;
 
+    std::vector<int> subL(tam1), subR(tam2);
+
+    // Copiando para os vetores temporários
+    for (int i = 0; i < tam1; i++) {
+        subL[i] = vec[esq + i];
+        trocas++;   // movimentação ao copiar
+    }
+    for (int j = 0; j < tam2; j++) {
+        subR[j] = vec[meio + 1 + j];
+        trocas++;   // movimentação ao copiar
+    }
+
+    int i = 0, j = 0, k = esq;
+
+    // Merge das duas metades
+    while (i < tam1 && j < tam2) {
+        comparacoes++;  // comparação L[i] <= R[j]
+
+        if (subL[i] <= subR[j]) {
+            vec[k] = subL[i];
+            trocas++; 
+            i++;
+        } else {
+            vec[k] = subR[j];
+            trocas++; 
+            j++;
+        }
+        
+        k++;
+    }
+
+    // Copia resto de L
+    while (i < tam1) {
+        vec[k] = subL[i];
+        trocas++;
+        i++;
+        k++;
+    }
+
+    // Copia resto de R
+    while (j < tam2) {
+        vec[k] = subR[j];
+        trocas++;
+        j++;
+        k++;
+    }
+}
+void Ordenacao::mergeSortRec(std::vector<int>& vec, int esq, int dir) {
+    if (esq >= dir)
+        return;
+
+    int meio = esq + (dir - esq) / 2;
+
+    mergeSortRec(vec, esq, meio);
+    mergeSortRec(vec, meio + 1, dir);
+    merge(vec, esq, meio, dir);
+}
+
+
+void Ordenacao::mergeSort(std::vector<int>& vec) {
+    if (vec.size() > 1)
+        mergeSortRec(vec, 0, vec.size() - 1);
+}
 //função para medir tempo de execução
 void  Ordenacao::medirTempo(std::function<void(std::vector<int>&)> funcaoOrdenacao, std::vector<int>& vec)
 {

@@ -42,7 +42,7 @@ std::vector<std::vector<int>> Gerenciador::gerarVetorDeVetoresIguais(int tam, st
     return vetorDeVetores;
 }
 
-void Gerenciador::rodar10vzsVetorAletaorio(std::function<void(std::vector<int> &vec)> ordenacao, std::vector<int> vetor)
+void Gerenciador::rodar10vzsVetorAleatorio(std::function<void(std::vector<int> &vec)> ordenacao, std::vector<int> vetor)
 {
     double somaTrocas = 0.0;
     double somaComparacoes = 0.0;
@@ -71,7 +71,7 @@ void Gerenciador::testarVetoresAleatorios(std::function<void(std::vector<int> &v
     double somaMediaComparacoes = 0.0;
     for (std::vector<int> vet : vetor)
     {
-        rodar10vzsVetorAletaorio(ordenacao, vet);
+        rodar10vzsVetorAleatorio(ordenacao, vet);
         // medias do vetor individual da iteração
         double mediaTrocas = Ordenacao::trocas / 10.0;
         double mediaComparacoes = Ordenacao::comparacoes / 10.0;
@@ -86,104 +86,46 @@ void Gerenciador::testarVetoresAleatorios(std::function<void(std::vector<int> &v
     std::cout << "Media final de Tempo: " << somaMediaTempo / 10 << "\n";
 }
 
-void Gerenciador::executarTestes()
-{
-    std::vector<int> vetorOrdenadoTamMil = GeradorVetor::gerarVetorCrescente(1000);
-    std::vector<int> vetorInversoTamMil = GeradorVetor::gerarVetorDecrescente(1000);
-    std::vector<std::vector<int>> vetoresAleatorioTamMil = gerarVetorDeVetores(1000, GeradorVetor::gerarVetorAleatorio);
-    std::vector<std::vector<int>> vetoresQuaseOrdTamMil = gerarVetorDeVetores(1000, GeradorVetor::gerarVetorQuaseOrdenado);
-    std::vector<int> copiaInsert = vetorOrdenadoTamMil;
-    std::vector<int> copiaSelection = vetorOrdenadoTamMil;
-    std::vector<int> copiaQuickL = vetorOrdenadoTamMil;
-    std::vector<int> copiaQuickH = vetorOrdenadoTamMil;
-
-    std::cout << " -- TESTE COM VETORES DE TAMANHO 1000 -- " << std::endl;
+std::vector<std::vector<int>> Gerenciador::fazerCopias(const std::vector<int>& vec, int quant) {
+    std::vector<std::vector<int>> copias;
+    for(int i = 0; i < quant; i++) {
+        std::vector<int> copia = vec;
+        copias.push_back(copia);
+    }
+    return copias;
+}
+void Gerenciador::fazerTestes(int tam) {
+    std::vector<int> vetorOrdenado = GeradorVetor::gerarVetorCrescente(tam);
+    std::vector<int> vetorInverso = GeradorVetor::gerarVetorDecrescente(tam);
+    std::vector<std::vector<int>> vetoresAleatorio = gerarVetorDeVetores(tam, GeradorVetor::gerarVetorAleatorio);
+    std::vector<std::vector<int>> vetoresQuaseOrd = gerarVetorDeVetores(tam, GeradorVetor::gerarVetorQuaseOrdenado);
+    std::vector<std::vector<int>> copias = fazerCopias(vetorOrdenado, 6);
     std::cout << "-- Vetor ordenado --" << std::endl;
     std::cout << "Bubble Sort" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::bubbleSort, vetorOrdenadoTamMil);
+    rodar10vzsMesmoVetor(Ordenacao::bubbleSort, copias[0]);
     std::cout << std::endl;
     std::cout << "Insert Sort" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::insertionSort, copiaInsert);
+    rodar10vzsMesmoVetor(Ordenacao::insertionSort, copias[1]);
     std::cout << std::endl;
     std::cout << "Selection Sort" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::selectionSort, copiaSelection);
+    rodar10vzsMesmoVetor(Ordenacao::selectionSort, copias[2]);
     std::cout << std::endl;
     std::cout << "Quick Sort Lomuto" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::quickSortLomuto, copiaQuickL);
+    rodar10vzsMesmoVetor(Ordenacao::quickSortLomuto, copias[3]);
     std::cout << std::endl;
     std::cout << "Quick Sort Hoare" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::quickSortHoare, copiaQuickH);
+    rodar10vzsMesmoVetor(Ordenacao::quickSortHoare, copias[4]);
+    std::cout << std::endl;
+    std::cout << "Merge Sort" << std::endl;
+    rodar10vzsMesmoVetor(Ordenacao::mergeSort, copias[5]);
     std::cout << std::endl;
 
-    std::vector<int> copiaBubble = vetorInversoTamMil;
-    copiaInsert = vetorInversoTamMil;
-    copiaSelection = vetorInversoTamMil;
-    copiaQuickL = vetorInversoTamMil;
-    copiaQuickH = vetorInversoTamMil;
+}
 
-
-    std::cout << "-- Vetor inversamente ordenado --" << std::endl;
-    std::cout << "Bubble Sort" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::bubbleSort, copiaBubble);
-    std::cout << std::endl;
-    std::cout << "Insert Sort" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::insertionSort, copiaInsert);
-    std::cout << std::endl;
-    std::cout << "Selection Sort" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::selectionSort, copiaSelection);
-    std::cout << std::endl;
-    std::cout << "Quick Sort Lomuto" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::quickSortLomuto, copiaQuickL);
-    std::cout << std::endl;
-    std::cout << "Quick Sort Hoare" << std::endl;
-    rodar10vzsMesmoVetor(Ordenacao::quickSortHoare, copiaQuickH);
-    std::cout << std::endl;
-
-    std::vector<std::vector<int>> copi1 = vetoresAleatorioTamMil;
-    std::vector<std::vector<int>> copi2 = vetoresAleatorioTamMil;
-    std::vector<std::vector<int>> copi3 = vetoresAleatorioTamMil;
-    std::vector<std::vector<int>> copi4 = vetoresAleatorioTamMil;
-    std::vector<std::vector<int>> copi5 = vetoresAleatorioTamMil;
-
-    std::cout << "-- Vetor aleatório --" << std::endl;
-    std::cout << "Bubble Sort" << std::endl;
-    testarVetoresAleatorios(Ordenacao::bubbleSort, copi1);
-    std::cout << std::endl;
-    std::cout << "Insert Sort" << std::endl;
-    testarVetoresAleatorios(Ordenacao::insertionSort, copi2);
-    std::cout << std::endl;
-    std::cout << "Selection Sort" << std::endl;
-    testarVetoresAleatorios(Ordenacao::selectionSort, copi3);
-    std::cout << std::endl;
-    std::cout << "Quick Sort Lomuto" << std::endl;
-    testarVetoresAleatorios(Ordenacao::quickSortLomuto, copi4);
-    std::cout << std::endl;
-    std::cout << "Quick Sort Hoare" << std::endl;
-    testarVetoresAleatorios(Ordenacao::quickSortHoare, copi5);
-    std::cout << std::endl;
-
-    copi1 = vetoresQuaseOrdTamMil;
-    copi2 = vetoresQuaseOrdTamMil;
-    copi3 = vetoresQuaseOrdTamMil;
-    copi4 = vetoresQuaseOrdTamMil;
-    copi5 = vetoresQuaseOrdTamMil;
-    
-
-    std::cout << "-- Vetor quase ordenado --" << std::endl;
-    std::cout << "Bubble Sort" << std::endl;
-    testarVetoresAleatorios(Ordenacao::bubbleSort, copi1);
-    std::cout << std::endl;
-    std::cout << "Insert Sort" << std::endl;
-    testarVetoresAleatorios(Ordenacao::insertionSort, copi2);
-    std::cout << std::endl;
-    std::cout << "Selection Sort" << std::endl;
-    testarVetoresAleatorios(Ordenacao::selectionSort, copi3);
-    std::cout << std::endl;
-    std::cout << "Quick Sort Lomuto" << std::endl;
-    testarVetoresAleatorios(Ordenacao::quickSortLomuto, copi4);
-    std::cout << std::endl;
-    std::cout << "Quick Sort Hoare" << std::endl;
-    testarVetoresAleatorios(Ordenacao::quickSortHoare, copi5);
-    std::cout << std::endl;
-
+void Gerenciador::executarTestes(int tam)
+{ 
+    fazerTestes(1000);
+    fazerTestes(10000);
+    fazerTestes(100000);
+    fazerTestes(1000000);
 }
