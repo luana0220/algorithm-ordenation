@@ -3,7 +3,7 @@
 #include "GeradorVetor.hpp"
 
 
-/*std::vector<std::vector<int>> Gerenciador::fazerCopias(const std::vector<int> &vec, int quant)
+std::vector<std::vector<int>> Gerenciador::fazerCopias(const std::vector<int> &vec, int quant)
 {
     std::vector<std::vector<int>> copias;
     for (int i = 0; i < quant; i++)
@@ -12,9 +12,9 @@
         copias.push_back(copia);
     }
     return copias;
-}*/
+}
 
-/*std::vector<std::vector<std::vector<int>>> Gerenciador::fazerCopias(const std::vector<std::vector<int>> &vec, int quant)
+std::vector<std::vector<std::vector<int>>> Gerenciador::fazerCopias(const std::vector<std::vector<int>> &vec, int quant)
 {
     std::vector<std::vector<std::vector<int>>> copias;
     for (int i = 0; i < quant; i++)
@@ -23,40 +23,40 @@
         copias.push_back(copia);
     }
     return copias;
-}*/
+}
 
-/*void Gerenciador::vetoresOrdenadosEinversamente(std::vector<std::vector<int>> &copiasVec, const std::vector<std::string> &nomesAlgoritmos, const std::vector<std::function<void(std::vector<int> &vec)>> &vetorDefuncoes, const std::string &cenario)
+void Gerenciador::vetoresOrdenadosEinversamente(std::vector<std::vector<int>> &copiasVec, const std::vector<std::string> &nomesAlgoritmos, const std::vector<std::function<void(std::vector<int> &vec)>> &vetorDefuncoes, const std::string &cenario)
 {
     for (int i = 0; i < nomesAlgoritmos.size(); i++)
-    {if ((cenario == "Vetor Ordenado" && copiasVec[i].size() >= 100000 &&
-     (nomesAlgoritmos[i] == "Quick Sort Lomuto" || nomesAlgoritmos[i] == "Quick Sort Hoare")) ||
-    (cenario == "Vetor Inversamente Ordenado" && copiasVec[i].size() >= 100000 &&
-     nomesAlgoritmos[i] == "Quick Sort Lomuto" || nomesAlgoritmos[i] == "Quick Sort Hoare"))
-        {
-            std::cout << nomesAlgoritmos[i] << ": [Pulado para evitar overflow]\n";
-            continue;
-        }
+    {
+        //if ((cenario == "Vetor Ordenado" && copiasVec[i].size() >= 100000 &&
+     //(nomesAlgoritmos[i] == "Quick Sort Lomuto" || nomesAlgoritmos[i] == "Quick Sort Hoare")) ||
+   // (cenario == "Vetor Inversamente Ordenado" && copiasVec[i].size() >= 100000 &&
+    // nomesAlgoritmos[i] == "Quick Sort Lomuto" || nomesAlgoritmos[i] == "Quick Sort Hoare"))
+        //{
+            //std::cout << nomesAlgoritmos[i] << ": [Pulado para evitar stack koverflow]\n";
+           // continue;
+        //}
         std::cout << "Algoritmo: " << nomesAlgoritmos[i] << std::endl;
         rodar10vzsMesmoVetor(vetorDefuncoes[i], copiasVec[i], cenario, nomesAlgoritmos[i]);
     }
 }
-*/
-/*void Gerenciador::vetoresAleatoriosEquaseOrd(std::vector<std::vector<std::vector<int>>> &copiasVec, const std::vector<std::string> &nomesAlgoritmos, const std::vector<std::function<void(std::vector<int> &vec)>> &vetorDefuncoes, const std::string &cenario)
+void Gerenciador::vetoresAleatoriosEquaseOrd(std::vector<std::vector<std::vector<int>>> &copiasVec, const std::vector<std::string> &nomesAlgoritmos, const std::vector<std::function<void(std::vector<int> &vec)>> &vetorDefuncoes, const std::string &cenario)
 {
     for (int i = 0; i < nomesAlgoritmos.size(); i++)
     {
         std::cout << "Algoritmo: " << nomesAlgoritmos[i] << std::endl;
         testarVetoresAleatorios(vetorDefuncoes[i], copiasVec[i], cenario, nomesAlgoritmos[i]);
     }
-}*/
+}
 
-/*void Gerenciador::rodarTodosOsAlgoritmos(int tam, const std::vector<std::string> &nomesAlgoritmos, const std::vector<std::function<void(std::vector<int> &vec)>> &vetorDefuncoes)
+void Gerenciador::rodarTodosOsAlgoritmos(int tam, const std::vector<std::string> &nomesAlgoritmos, const std::vector<std::function<void(std::vector<int> &vec)>> &vetorDefuncoes)
 {
+
     vetorOrdenado = GeradorVetor::gerarVetorCrescente(tam);
     vetorInverso = GeradorVetor::gerarVetorDecrescente(tam);
     vetoresAleatorios = gerarVetorDeVetores(tam, GeradorVetor::gerarVetorAleatorio);
     vetoresQuaseOrd = gerarVetorDeVetores(tam, GeradorVetor::gerarVetorQuaseOrdenado);
-
     // ------------------- VETORES ORDENADOS -------------------
     std::vector<std::vector<int>> copias = fazerCopias(vetorOrdenado, 6);
     std::cout << "-- TESTES COM VETORES DE TAMANHO " << tam << " --\n\n";
@@ -87,7 +87,7 @@
     vetoresAleatoriosEquaseOrd(copiasVetoresDesordenados, nomesAlgoritmos, vetorDefuncoes, "Vetor quase ordenado");
 
     std::cout << std::endl;
-}*/
+}
 
 std::ofstream Gerenciador::resultados;
 
@@ -201,12 +201,12 @@ void Gerenciador::executarTestes(const std::string &nomeArq)
             std::cout << "==================================================================\n\n";
             for (const std::string &cenario : cenarios)
             {
-                if(((nomesAlgoritmos[i] == "Bubble Sort" || nomesAlgoritmos[i] == "Insertion Sort" || nomesAlgoritmos[i] == "Selection Sort" || nomesAlgoritmos[i] == "Quick Sort Lomuto") && cenario == "Vetor quase ordenado" && tam == 10000) || (nomesAlgoritmos[i] ==  "Merge Sort" && (cenario == "Vetor Ordenado" || cenario == "Vetor Inversamente Ordenado") && tam >= 10000)) {
-                    std::cout << "Pulando cenario: " << cenario << " para evitar stack overflow" << std::endl;
-                } else {
+                //if(((nomesAlgoritmos[i] == "Bubble Sort" || nomesAlgoritmos[i] == "Insertion Sort" || nomesAlgoritmos[i] == "Selection Sort" || nomesAlgoritmos[i] == "Quick Sort Lomuto") && cenario == "Vetor quase ordenado" && tam == 10000) || (nomesAlgoritmos[i] ==  "Merge Sort" && (cenario == "Vetor Ordenado" || cenario == "Vetor Inversamente Ordenado") && tam >= 10000)) {
+                    //std::cout << "Pulando cenario: " << cenario << " para evitar stack overflow" << std::endl;
+                //} else {
                    testarAlgoritmoEmCenario(vetorDeFuncoes[i], nomesAlgoritmos[i], tam, cenario);
             
-                }    
+                //}    
             }
             
         }
