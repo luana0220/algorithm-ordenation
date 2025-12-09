@@ -89,7 +89,7 @@ void Ordenacao::bubbleSort(std::vector<int> &vec)
     for (int i = 0; i < tam - 1; i++)
     {
         bool trocou = false;
-        for (int j = 0; j < tam - i - 1; j++)
+        for (int j = 0; j < tam - i - 1; j++) // vai dimuindo o tamanho do vetor a cada iteração
         {
             comparacoes++;
             if (vec[j] > vec[j + 1])
@@ -109,13 +109,12 @@ void Ordenacao::insertionSort(std::vector<int> &vec)
 
     for (int i = 1; i < tam; i++)
     {
-        int chave = vec[i];
+        int chave = vec[i]; // chave é o elemento do indíce 1
         int j = i - 1;
         // primeira comparação para entrar no while
         comparacoes += 2;
         while (j >= 0 && vec[j] > chave)
         {
-            // Deslocamento NÃO é troca
             vec[j + 1] = vec[j];
             trocas++; // consideramos essa movimentação como troca para facilitar
             j--;

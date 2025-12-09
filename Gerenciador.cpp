@@ -108,7 +108,7 @@ void Gerenciador::escrever(const std::string &algoritmo, const std::string &cena
 }
 void Gerenciador::executarTestes(const std::string &nomeArq)
 {
-    //abrirArq(nomeArq);
+    abrirArq(nomeArq);
     // vetor que armazena os nomes dos algoritmos para serem usados na impressão e para testar cada algoritmo
     std::vector<std::string> nomesAlgoritmos = {"Bubble Sort", "Insertion Sort", "Selection Sort", "Quick Sort Lomuto", "Quick Sort Hoare", "Merge Sort"};
     // armazena as funções de ordenação para serem testadas
